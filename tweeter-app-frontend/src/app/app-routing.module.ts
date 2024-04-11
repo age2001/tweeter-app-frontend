@@ -10,7 +10,7 @@ import { ProfilePageComponent } from './pages/profile-page/profile-page.componen
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomePageComponent, canActivate: [AuthGuard]},
-  { path: 'profile/:username', component: ProfilePageComponent, canActivate: [AuthGuard]},
+  { path: 'profile', component: ProfilePageComponent, canActivate: [AuthGuard]},
   { path: 'register', component: RegisterPageComponent},
   { path: 'login', component: LoginPageComponent}
 ]

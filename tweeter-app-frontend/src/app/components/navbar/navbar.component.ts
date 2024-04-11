@@ -18,18 +18,13 @@ export class NavbarComponent {
     });
   }
 
-  onRegister() {
-    this.router.navigateByUrl('register');
-  }
-
-  onLogin() {
-    this.router.navigateByUrl('login');
-  }
-
   onLogout() {
     this.authService.logout();
     this.router.navigateByUrl('login');
     // this.router.navigateByUrl('home');
+  }
 
+  onProfile() {
+    this.router.navigateByUrl('profile');
   }
 }
