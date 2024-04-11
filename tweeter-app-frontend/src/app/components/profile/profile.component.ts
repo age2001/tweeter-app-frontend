@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { IUserInfo } from 'src/app/models/user-info.model';
 
 @Component({
   selector: 'app-profile',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent {
-
+  userInfo: IUserInfo = {
+    firstName: '',
+    lastName: '',
+    userName: '',
+    bio: ''
+  }
 }
