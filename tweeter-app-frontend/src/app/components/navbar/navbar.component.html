@@ -6,16 +6,16 @@
   
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
+        <li class="nav-item" role="button">
           <a class="nav-link" (click)="onProfile()">Profile</a>
         </li>
         <!-- <li *ngIf="!authService.getToken()" routerLink="/register" class="nav-item">
           <a class="nav-link">Register</a>
         </li> -->
-        <li *ngIf="!authService.getToken()" routerLink="/login" class="nav-item">
+        <li *ngIf="!authService.getToken()" role="button" routerLink="/login" class="nav-item">
           <a class="nav-link">Login</a>
         </li>
-        <li *ngIf="authService.getToken()" (click)="onLogout()" class="nav-item">
+        <li *ngIf="authService.getToken()" role="button" (click)="onLogout()" class="nav-item">
           <a class="nav-link">Logout</a>
         </li>
       </ul>

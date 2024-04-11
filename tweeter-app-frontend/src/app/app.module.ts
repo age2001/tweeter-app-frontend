@@ -12,6 +12,8 @@ import { PostsComponent } from './components/posts/posts.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProfileComponent } from './components/profile/profile.component';
+import { NewTweetComponent } from './components/new-tweet/new-tweet.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HomePageComponent,
     NavbarComponent,
     RepliesComponent,
-    PostsComponent
+    PostsComponent,
+    ProfileComponent,
+    NewTweetComponent
   ],
   imports: [
     BrowserModule,

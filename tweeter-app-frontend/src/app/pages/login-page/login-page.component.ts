@@ -43,6 +43,7 @@ export class LoginPageComponent{
   onLoginHandler() {
     this.authService.login(this.loginForm.value).subscribe((response: any) => {
       localStorage.setItem('token', response.response);
+      localStorage.setItem('userName', response.userName);
       this.router.navigate(['/home'], { queryParams: { loggedIn: 'true' }});
     }, (error: any) => {
       this.alertMessage = "Login failed, please try again!";
