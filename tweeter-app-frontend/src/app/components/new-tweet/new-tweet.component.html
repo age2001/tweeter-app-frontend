@@ -1,21 +1,20 @@
-<p>new-tweet works!</p>
 <div class="container wrapper">
     <form #tweetForm="ngForm" (submit)="onTweetHandler()">
-        <label>Tweet something</label>
-        <input
-            type="text"
-            class="form-control"
-            name="content"
-            [(ngModel)]="tweet.content"
-            #content="ngModel"
-            minlength="1"
-            maxlength="144"
-            required
-            [class.is-invalid]="content.invalid && content.touched"
-            />
-        <div *ngIf="content.errors && content.touched">
-            <small class="text-danger" *ngIf="content.errors['minlength']">Tweet must be at least 1 character</small>
-            <small class="text-danger" *ngIf="content.errors['maxlength']">Tweet must be at most 144 characters</small>
+        <div class="form-group">
+            <textarea
+                type="text"
+                (input)="onInputHandler($event)"
+                autocomplete="off"
+                placeholder="Tweet something..."
+                class="form-control"
+                name="content"
+                [(ngModel)]="tweet.content"
+                #content="ngModel"
+                minlength="1"
+                maxlength="144"
+                required
+                ></textarea>
+            <div>Characters left: {{ characterCount }}</div>
         </div>
         <input
             type="submit"

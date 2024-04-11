@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./new-tweet.component.css']
 })
 export class NewTweetComponent {
+  characterCount: number = 144;
   tweet: ICreatePost = {
     userName: '',
     content: '',
@@ -16,6 +17,10 @@ export class NewTweetComponent {
   }
 
   constructor(private authService: AuthService, private router: Router) {}
+
+  onInputHandler(event: any) {
+    this.characterCount = 144 - event.target.value.length;
+  }
 
   onTweetHandler() {
     const userName = localStorage.getItem('userName');
