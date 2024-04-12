@@ -1,19 +1,33 @@
-<div class="container wrapper">
-    <h2 class="text-center">Tweets</h2>
-    <div class="row">
-      <div class="col-sm-3" *ngFor="let post of posts">
-        <div class="card">
-          <img src="{{ post.avatarUrl }}" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">{{ post.firstName }}</h5>
-            <h5 class="card-title">{{ post.lastName }}</h5>
-            <h5 class="card-title">{{ post.userName }}</h5>
-            <h5 class="card-title">{{ post.timestamp }}</h5>
-            <p class="card-text">{{ post.content }}</p>
-            <button (click)="onClickHandler(0)" class="btn btn-primary btn-block">Show Thread</button>
-          </div>
-        </div>
+<div [class]="className">
+  <ul class="tweet" *ngFor="let post of posts; let first = first">
+    <hr *ngIf="!first">
+    <div class="top-tweet">
+      <div class="user-info">
+        <li>
+          <img src="{{ post.avatarUrl }}" onerror="this.src='../../../assets/placeholder-image.png'" width="40px" alt="avatar" class="avatar">
+        </li>
+        <li class="text-left">
+          <h5 class="semibold-ellipsis nm">{{ post.firstName }} {{ post.lastName }}</h5>
+          <p class="nm">&#64;{{ post.userName }}</p>
+        </li>
       </div>
+      <li>
+        <p class="text-muted">{{ post.timestamp }}</p>
+      </li>
     </div>
-  </div>
+    
+    <li style="font-weight: bold;">
+      {{ returnTag(post?.tags) }}
+    </li>
+
+    <li>
+      <p>{{ post.content }}</p>
+    </li>
+    
+    <li>
+      <p role="button" class="reply-text" *ngIf="checkRepliesQuantity(post.replies) == 1">{{ getRepliesQuantity(post.replies) }} Reply</p>
+      <p role="button" class="reply-text" *ngIf="checkRepliesQuantity(post.replies) > 1">{{ getRepliesQuantity(post.replies) }} Replies</p>
+    </li>
+  </ul>
+</div>
   

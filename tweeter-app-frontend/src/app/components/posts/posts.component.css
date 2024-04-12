@@ -1,9 +1,51 @@
 .wrapper{
     background-color: #fff;
-    padding: 40px;
+    padding: 20px;
     border-radius: 10px;
     border-color: #888;
     border-style: solid;
     box-shadow: 10px 5px #888;
-    margin-top: 100px;
+    margin-top: 10px;
+}
+
+.all-posts-vh{
+    height: 90vh;
+}
+
+.profile-posts-vh {
+    overflow-y: scroll;
+    height: 50vh
+}
+
+.user-info {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.tweet {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.top-tweet {
+    display: flex;
+    justify-content: space-between;
+}
+
+.reply-text {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+ul div {
+    margin: 0;
+}
+
+ul div li h5, ul div li p {
+    margin: 0;
+}
+
+hr {
+    color: black;
 }
