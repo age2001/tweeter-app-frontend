@@ -4,6 +4,8 @@ import { IPostInfo } from 'src/app/models/post-info.model';
 import { DataService } from 'src/app/services/data.service';
 
 import * as usersData from './users.json'
+import { ICreateReply } from 'src/app/models/reply-create.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-posts',
@@ -16,9 +18,18 @@ export class PostsComponent {
   pageName: any;
   username: any;
   // posts: IPostInfo[] = [];
+
+  modalPost: any
   posts: any = JSON.parse(JSON.stringify(usersData)).users;
 
-  constructor(private dataService: DataService, private activatedRoute: ActivatedRoute, private router: Router, private elementRef: ElementRef) {
+  characterCount: number = 144;
+  reply: ICreateReply = {
+    userName: '',
+    content: '',
+    tags: []
+  }
+
+  constructor(private dataService: DataService, private activatedRoute: ActivatedRoute, private router: Router, private elementRef: ElementRef, private authService: AuthService) {
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
     this.pageName = this.elementRef.nativeElement.getAttribute('pageName');
 
@@ -32,19 +43,48 @@ export class PostsComponent {
     // Else if on the users profile page, get posts by the users stored username
     if (this.pageName === 'allPosts') {
       this.className = 'container wrapper'
-      this.dataService.getPosts().subscribe((response: any) => {
-        console.log(response);
-        this.posts = response;
-      });
+      // this.dataService.getPosts().subscribe((response: any) => {
+      //   console.log(response);
+      //   this.posts = response;
+      // });
     } else if (this.pageName === 'profilePosts') {
       this.className = 'container wrapper profile-posts-vh'
-      this.dataService.getPostsByUsername(this.username).subscribe((response: any) => {
-        console.log(response);
-        this.posts = response;
-      });
+      // this.dataService.getPostsByUsername(this.username).subscribe((response: any) => {
+      //   console.log(response);
+      //   this.posts = response;
+      // });
     }
   }
   
+  onInputHandler(event: any) {
+    this.characterCount = 144 - event.target.value.length;
+    var hashTags = event.target.value.match(/(^|\B)#(?![0-9_]+\b)([a-zA-Z0-9_]{1,50})(\b|\r)/g)
+    var hashTagDiv = document.querySelector(".reply-hashtags");
+    if (hashTagDiv !== null) {
+      if (hashTags !== null) {
+        hashTagDiv.innerHTML = hashTags.join(" ");
+      } else {
+        hashTagDiv.innerHTML = "";
+      }
+    }
+  }
+
+  onReplyHandler() {
+    const userName = localStorage.getItem('userName');
+    if (userName !== null) {
+      this.reply.userName = userName;
+    } else {
+      return;
+    }
+    this.authService.register(this.reply).subscribe((response: any) => {
+      console.log(response);
+      // this.router.navigate(['/profile'], { queryParams: { newReply: 'true' } });
+      location.reload();
+    }, (error: any) => {
+      console.log(error);
+    });
+  }
+
   onClickHandler(id: any) {
     this.router.navigate(['/post', id]);
   }
@@ -53,6 +93,7 @@ export class PostsComponent {
     if (tag === undefined) {
       return "";
     }
+
     return tag.map(i => '#' + i).join(" ");
   }
   
@@ -68,5 +109,9 @@ export class PostsComponent {
       return "";
     }
     return replies.length;
+  }
+
+  passPostInfoToModal(post: any) {
+    this.modalPost = post;
   }
 }

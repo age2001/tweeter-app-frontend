@@ -1,13 +1,21 @@
 <div [class]="className">
   <ul class="tweet" *ngFor="let post of posts; let first = first">
-    <hr *ngIf="!first">
+    <hr *ngIf="!first" />
     <div class="top-tweet">
       <div class="user-info">
         <li>
-          <img src="{{ post.avatarUrl }}" onerror="this.src='../../../assets/placeholder-image.png'" width="40px" alt="avatar" class="avatar">
+          <img
+            src="{{ post.avatarUrl }}"
+            onerror="this.src='../../../assets/placeholder-image.png'"
+            width="40px"
+            alt="avatar"
+            class="avatar"
+          />
         </li>
-        <li style="padding-left: 5px;" class="text-left">
-          <h5 class="semibold-ellipsis nm">{{ post.firstName }} {{ post.lastName }}</h5>
+        <li style="padding-left: 5px" class="text-left">
+          <h5 class="semibold-ellipsis nm">
+            {{ post.firstName }} {{ post.lastName }}
+          </h5>
           <p class="nm">&#64;{{ post.userName }}</p>
         </li>
       </div>
@@ -15,19 +23,123 @@
         <p class="text-muted">{{ post.timestamp }}</p>
       </li>
     </div>
-    
+
     <li>
       <p>{{ post.content }}</p>
     </li>
 
-    <li style="font-weight: bold;">
+    <li style="font-weight: bold">
       {{ returnTag(post?.tags) }}
     </li>
-    
+
+    <p
+        role="button"
+        data-toggle="modal"
+        data-target="#exampleModalCenter"
+        (click)="passPostInfoToModal(post)"
+        class="reply-text"
+        *ngIf="checkRepliesQuantity(post.replies) == 0"
+      >
+        Leave a Reply!
+      </p>
     <li>
-      <p role="button" class="reply-text" *ngIf="checkRepliesQuantity(post.replies) == 1">{{ getRepliesQuantity(post.replies) }} Reply</p>
-      <p role="button" class="reply-text" *ngIf="checkRepliesQuantity(post.replies) > 1">{{ getRepliesQuantity(post.replies) }} Replies</p>
+      <p
+        role="button"
+        data-toggle="modal"
+        data-target="#exampleModalCenter"
+        (click)="passPostInfoToModal(post)"
+        class="reply-text"
+        *ngIf="checkRepliesQuantity(post.replies) == 1"
+      >
+        {{ getRepliesQuantity(post.replies) }} Reply
+      </p>
+      <p
+        role="button"
+        data-toggle="modal"
+        data-target="#exampleModalCenter"
+        (click)="passPostInfoToModal(post)"
+        class="reply-text"
+        *ngIf="checkRepliesQuantity(post.replies) > 1"
+      >
+        {{ getRepliesQuantity(post.replies) }} Replies
+      </p>
     </li>
   </ul>
 </div>
-  
+
+<div
+  class="modal fade"
+  id="exampleModalCenter"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="top-tweet">
+          <div class="user-info">
+            <li>
+              <img
+                src="{{ modalPost?.avatarUrl }}"
+                onerror="this.src='../../../assets/placeholder-image.png'"
+                width="40px"
+                alt="avatar"
+                class="avatar"
+              />
+            </li>
+            <li style="padding-left: 5px" class="text-left">
+              <h5 class="semibold-ellipsis nm">
+                {{ modalPost?.firstName }} {{ modalPost?.lastName }}
+              </h5>
+              <p class="nm">&#64;{{ modalPost?.userName }}</p>
+            </li>
+          </div>
+          <li>
+            <p class="text-muted">{{ modalPost?.timestamp }}</p>
+          </li>
+        </div>
+        <div class="bot-tweet">
+          <p>
+            {{ modalPost?.content }}
+          </p>
+          <p class="tags" *ngIf="modalPost?.tags">
+            {{ returnTag(modalPost?.tags) }}
+          </p>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <form #replyForm="ngForm" (submit)="onReplyHandler()">
+          <div class="form-group">
+              <textarea
+                  type="text"
+                  (input)="onInputHandler($event)"
+                  autocomplete="off"
+                  placeholder="Reply something..."
+                  class="form-control"
+                  name="content"
+                  [(ngModel)]="reply.content"
+                  #content="ngModel"
+                  minlength="1"
+                  maxlength="144"
+                  required
+                  ></textarea>
+              <div>Characters left: {{ characterCount }}</div>
+              <div style="font-weight: bold;" class="reply-hashtags"></div>
+          </div>
+          <input
+              type="submit"
+              value="Reply"
+              class="btn btn-primary"
+              [disabled]="replyForm.invalid"
+              />
+      </form>
+      </div>
+      <div class="modal-footer">
+        <p>replies</p>
+      </div>
+    </div>
+  </div>
+</div>

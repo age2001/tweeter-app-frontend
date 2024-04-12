@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileComponent } from './components/profile/profile.component';
 import { NewTweetComponent } from './components/new-tweet/new-tweet.component';
+import { NewReplyComponent } from './components/new-reply/new-reply.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { NewTweetComponent } from './components/new-tweet/new-tweet.component';
     RepliesComponent,
     PostsComponent,
     ProfileComponent,
-    NewTweetComponent
+    NewTweetComponent,
+    NewReplyComponent
   ],
   imports: [
     BrowserModule,

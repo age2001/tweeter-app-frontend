@@ -22,6 +22,12 @@
     margin-bottom: 20px;
 }
 
+.modal-header {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+}
+
 .tweet {
     list-style-type: none;
     margin: 0;
@@ -31,6 +37,19 @@
 .top-tweet {
     display: flex;
     justify-content: space-between;
+    width: 100%;
+}
+
+.top-tweet * {
+    margin: 0;
+}
+
+.bot-tweet * {
+    margin: 0;
+}
+
+.tags {
+    font-weight: bold;
 }
 
 .reply-text {
