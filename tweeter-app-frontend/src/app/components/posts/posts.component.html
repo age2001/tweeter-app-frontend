@@ -138,7 +138,39 @@
       </form>
       </div>
       <div class="modal-footer">
-        <p>replies</p>
+        <div style="width: 100%;" *ngFor="let reply of modalPost?.replies; let first = first;">
+          <hr *ngIf="!first" />
+          <div class="top-reply">
+            <div class="user-info">
+              <li>
+                <img
+                  src="{{ reply?.avatarUrl }}"
+                  onerror="this.src='../../../assets/placeholder-image.png'"
+                  width="40px"
+                  alt="avatar"
+                  class="avatar"
+                />
+              </li>
+              <li style="padding-left: 5px" class="text-left">
+                <h5 class="semibold-ellipsis nm">
+                  {{ reply?.firstName }} {{ reply?.lastName }}
+                </h5>
+                <p class="nm">&#64;{{ reply?.userName }}</p>
+              </li>
+            </div>
+            <li>
+              <p class="text-muted">{{ reply?.timestamp }}</p>
+            </li>
+          </div>
+          <div class="bot-reply">
+            <p>
+              {{ reply?.content }}
+            </p>
+            <p class="tags" *ngIf="reply?.tags">
+              {{ returnTag(reply?.tags) }}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

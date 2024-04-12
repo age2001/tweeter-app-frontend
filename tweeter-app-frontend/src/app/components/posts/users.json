@@ -12,14 +12,16 @@
                     "lastName": "Doe",
                     "userName": "janedoe",
                     "timestamp": "2017-01-01T00:00:00Z",
-                    "content" : "Hello World"
+                    "content" : "Hello World",
+                    "tags" : ["tag1", "tag2", "tag3"]
                 },
                 {
                     "firstName": "Jane",
                     "lastName": "Doe",
                     "userName": "janedoe",
                     "timestamp": "2017-01-01T00:00:00Z",
-                    "content" : "Hello World"
+                    "content" : "Hello World",
+                    "tags" : ["tag1", "tag2", "tag3"]
                 }
             ],
             "tags" : ["tag1", "tag2", "tag3"]
@@ -43,14 +45,16 @@
                     "lastName": "Doe",
                     "userName": "janedoe",
                     "timestamp": "2017-01-01T00:00:00Z",
-                    "content" : "Hello World"
+                    "content" : "Hello World",
+                    "tags" : ["tag1", "tag2", "tag3"]
                 },
                 {
                     "firstName": "Jane",
                     "lastName": "Doe",
                     "userName": "janedoe",
                     "timestamp": "2017-01-01T00:00:00Z",
-                    "content" : "Hello World"
+                    "content" : "Hello World",
+                    "tags" : ["tag1", "tag2", "tag3"]
                 }
             ],
             "tags" : ["tag1", "tag2", "tag3"]
@@ -139,14 +143,16 @@
                     "lastName": "Doe",
                     "userName": "janedoe",
                     "timestamp": "2017-01-01T00:00:00Z",
-                    "content" : "Hello World"
+                    "content" : "Hello World",
+                    "tags" : ["tag1", "tag2", "tag3"]
                 },
                 {
                     "firstName": "Jane",
                     "lastName": "Doe",
                     "userName": "janedoe",
                     "timestamp": "2017-01-01T00:00:00Z",
-                    "content" : "Hello World"
+                    "content" : "Hello World",
+                    "tags" : ["tag1", "tag2", "tag3"]
                 }
             ],
             "tags" : ["tag1", "tag2", "tag3"]

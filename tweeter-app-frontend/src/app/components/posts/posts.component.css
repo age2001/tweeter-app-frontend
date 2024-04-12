@@ -28,6 +28,12 @@
     flex-direction: column;
 }
 
+.modal-footer {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+}
+
 .tweet {
     list-style-type: none;
     margin: 0;
@@ -45,6 +51,20 @@
 }
 
 .bot-tweet * {
+    margin: 0;
+}
+
+.top-reply {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.top-reply * {
+    margin: 0;
+}
+
+.bot-reply * {
     margin: 0;
 }
 
