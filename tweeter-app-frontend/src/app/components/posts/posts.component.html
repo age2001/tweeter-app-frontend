@@ -6,7 +6,7 @@
         <li>
           <img src="{{ post.avatarUrl }}" onerror="this.src='../../../assets/placeholder-image.png'" width="40px" alt="avatar" class="avatar">
         </li>
-        <li class="text-left">
+        <li style="padding-left: 5px;" class="text-left">
           <h5 class="semibold-ellipsis nm">{{ post.firstName }} {{ post.lastName }}</h5>
           <p class="nm">&#64;{{ post.userName }}</p>
         </li>
@@ -16,12 +16,12 @@
       </li>
     </div>
     
-    <li style="font-weight: bold;">
-      {{ returnTag(post?.tags) }}
-    </li>
-
     <li>
       <p>{{ post.content }}</p>
+    </li>
+
+    <li style="font-weight: bold;">
+      {{ returnTag(post?.tags) }}
     </li>
     
     <li>

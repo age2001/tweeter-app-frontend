@@ -36,9 +36,14 @@
 .reply-text {
     font-weight: bold;
     text-decoration: underline;
+    text-align: center;
 }
 
 ul div {
+    margin: 0;
+}
+
+ul li p {
     margin: 0;
 }
 
