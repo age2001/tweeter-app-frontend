@@ -20,13 +20,10 @@ export class NewTweetComponent {
 
   onInputHandler(event: any) {
     this.characterCount = 144 - event.target.value.length;
-    // var hashTags = event.target.value.match(/(#\w+)/gm)
     var hashTags = event.target.value.match(/(^|\B)#(?![0-9_]+\b)([a-zA-Z0-9_]{1,50})(\b|\r)/g)
-    console.log(hashTags)
     var hashTagDiv = document.querySelector(".hashtags");
     if (hashTagDiv !== null) {
       if (hashTags !== null) {
-        console.log("making it inside if statement")
         hashTagDiv.innerHTML = hashTags.join(" ");
       } else {
         hashTagDiv.innerHTML = "";
