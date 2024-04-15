@@ -111,7 +111,7 @@
       </div>
 
       <div class="modal-body">
-        <form #replyForm="ngForm" (submit)="onReplyHandler()">
+        <form #replyForm="ngForm" (submit)="onReplyHandler(modalPost)">
           <div class="form-group">
               <textarea
                   type="text"

@@ -7,6 +7,7 @@ import { DataService } from 'src/app/services/data.service';
 import { ICreateReply } from 'src/app/models/reply-create.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { ITag } from 'src/app/models/tag.model';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-posts',
@@ -30,7 +31,17 @@ export class PostsComponent {
     postId: -1
   }
 
-  constructor(private dataService: DataService, private activatedRoute: ActivatedRoute, private router: Router, private elementRef: ElementRef, private authService: AuthService) {
+  constructor(private dataService: DataService, 
+              private activatedRoute: ActivatedRoute, 
+              private router: Router, 
+              private elementRef: ElementRef, 
+              private authService: AuthService,
+              private sharedService: SharedService) {
+    
+    sharedService.onMainEvent.subscribe(() => {
+      this.updatePosts();
+    })
+
     this.username = localStorage.getItem('userName');
     this.pageName = this.elementRef.nativeElement.getAttribute('pageName');
 
@@ -77,7 +88,7 @@ export class PostsComponent {
     }
   }
 
-  onReplyHandler() {
+  onReplyHandler(post: any) {
     const userName = localStorage.getItem('userName');
     if (userName !== null) {
       this.reply.userName = userName;
@@ -89,7 +100,7 @@ export class PostsComponent {
       console.log(response);
       // this.router.navigate(['/profile'], { queryParams: { newReply: 'true' } });
       // location.reload();
-      
+      this.updateReplies(post);
     }, (error: any) => {
       console.log(error);
     });
@@ -147,6 +158,36 @@ export class PostsComponent {
   getTagsFromPost(post: any) {
     this.dataService.getTagsByPostId(post.id).subscribe((response: any) => {
       post.tags = response;
+    });
+  }
+
+  updateReplies(post: any) {
+    this.dataService.getRepliesByPostId(post.id).subscribe((response: any) => {
+      post.replies = response;
+      for (let reply of post.replies) {
+        this.dataService.getTagsByReplyId(reply.id).subscribe((response2: any) => {
+          reply.replyTags = response2;
+        });
+      }
+    });
+    this.reply.content = "";
+    this.characterCount = 144;
+    var hashTagDiv = document.querySelector(".reply-hashtags");
+    if (hashTagDiv !== null) {
+      hashTagDiv.innerHTML = "";
+    }
+  }
+
+  updatePosts() {
+    console.log("Updating posts")
+    console.log("current posts: ")
+    console.log(this.posts)
+    this.dataService.getPostsByUsername(this.username).subscribe((response: any) => {
+      this.posts = response;
+      for (let post of this.posts) {
+        this.getRepliesFromPost(post)
+        this.getTagsFromPost(post)
+      }
     });
   }
 }

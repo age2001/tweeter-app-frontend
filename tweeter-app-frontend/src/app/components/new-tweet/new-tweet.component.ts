@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ICreatePost } from 'src/app/models/post-create.model';
 import { ITag } from 'src/app/models/tag.model';
 import { DataService } from 'src/app/services/data.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-new-tweet',
@@ -19,7 +20,8 @@ export class NewTweetComponent {
 
   currentTags : ITag[] = [];
 
-  constructor(private dataService: DataService, private router: Router) {}
+  constructor(private dataService: DataService,  
+              private sharedService: SharedService) {}
 
   onInputHandler(event: any) {
     this.characterCount = 144 - event.target.value.length;
@@ -49,8 +51,15 @@ export class NewTweetComponent {
       console.log(response);
       // this.router.navigate(['/profile'], { queryParams: { newTweet: 'true' } });
       // location.reload();
+      this.sharedService.onMainEvent.emit();
     }, (error: any) => {
       console.log(error);
     });
+    this.tweet.content = "";
+    this.characterCount = 144;
+    var hashTagDiv = document.querySelector(".hashtags");
+    if (hashTagDiv !== null) {
+      hashTagDiv.innerHTML = "";
+    }
   }
 }
