@@ -26,11 +26,12 @@ export class PostsComponent {
   reply: ICreateReply = {
     userName: '',
     content: '',
-    tags: []
+    tags: [],
+    postId: -1
   }
 
   constructor(private dataService: DataService, private activatedRoute: ActivatedRoute, private router: Router, private elementRef: ElementRef, private authService: AuthService) {
-    this.username = this.activatedRoute.snapshot.paramMap.get('username');
+    this.username = localStorage.getItem('userName');
     this.pageName = this.elementRef.nativeElement.getAttribute('pageName');
 
     this.posts = []
@@ -39,16 +40,25 @@ export class PostsComponent {
     if (this.pageName === 'allPosts') {
       this.className = 'container wrapper'
       this.dataService.getPosts().subscribe((response: any) => {
-        console.log(response);
         this.posts = response;
+
+        for (let post of this.posts) {
+          this.getRepliesFromPost(post)
+          this.getTagsFromPost(post)
+        }
       });
     } else if (this.pageName === 'profilePosts') {
       this.className = 'container wrapper profile-posts-vh'
       this.dataService.getPostsByUsername(this.username).subscribe((response: any) => {
-          console.log(response);
           this.posts = response;
+
+          for (let post of this.posts) {
+            this.getRepliesFromPost(post)
+            this.getTagsFromPost(post)
+          }
         });
       }
+
   }
   
   onInputHandler(event: any) {
@@ -58,6 +68,10 @@ export class PostsComponent {
     if (hashTagDiv !== null) {
       if (hashTags !== null) {
         hashTagDiv.innerHTML = hashTags.join(" ");
+        this.reply.tags = [];
+        for (let tagName of hashTags) {
+          this.reply.tags.push({name: tagName})
+        }
       } else {
         hashTagDiv.innerHTML = "";
       }
@@ -71,7 +85,8 @@ export class PostsComponent {
     } else {
       return;
     }
-    this.authService.register(this.reply).subscribe((response: any) => {
+    this.reply.postId = this.modalPost.id;
+    this.dataService.createReply(this.reply).subscribe((response: any) => {
       console.log(response);
       // this.router.navigate(['/profile'], { queryParams: { newReply: 'true' } });
       location.reload();
@@ -89,12 +104,13 @@ export class PostsComponent {
       return "";
     }
     
-    let final_string = "";
-
     // return tag.map(i => '#' + i).join(" ");
-    for (let i = 0; i < tag.length; i++) {
-      final_string += '#' + tag[i].name + ' ';
+
+    let final_string = "";
+    for (let i of tag) {
+      final_string += i.name + " ";
     }
+
     return final_string;
   }
   
@@ -113,6 +129,19 @@ export class PostsComponent {
   }
 
   passPostInfoToModal(post: any) {
-    this.modalPost = post;
+      this.modalPost = post;
+      
+  }
+
+  getRepliesFromPost(post: any) {
+    this.dataService.getRepliesByPostId(post.id).subscribe((response: any) => {
+      post.replies = response;
+  });
+}
+
+  getTagsFromPost(post: any) {
+    this.dataService.getTagsByPostId(post.id).subscribe((response: any) => {
+      post.tags = response;
+    });
   }
 }

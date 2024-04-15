@@ -14,13 +14,13 @@
         </li>
         <li style="padding-left: 5px" class="text-left">
           <h5 class="semibold-ellipsis nm">
-            {{ post.firstName }} {{ post.lastName }}
+            {{ post.user.firstName }} {{ post.user.lastName }}
           </h5>
-          <p class="nm">&#64;{{ post.userName }}</p>
+          <p class="nm">&#64;{{ post.user.username }}</p>
         </li>
       </div>
       <li>
-        <p class="text-muted">{{ post.timestamp }}</p>
+        <p class="text-muted">{{ post.created }}</p>
       </li>
     </div>
 
@@ -91,13 +91,13 @@
             </li>
             <li style="padding-left: 5px" class="text-left">
               <h5 class="semibold-ellipsis nm">
-                {{ modalPost?.firstName }} {{ modalPost?.lastName }}
+                {{ modalPost?.user.firstName }} {{ modalPost?.user.lastName }}
               </h5>
-              <p class="nm">&#64;{{ modalPost?.userName }}</p>
+              <p class="nm">&#64;{{ modalPost?.user.username }}</p>
             </li>
           </div>
           <li>
-            <p class="text-muted">{{ modalPost?.timestamp }}</p>
+            <p class="text-muted">{{ modalPost?.created }}</p>
           </li>
         </div>
         <div class="bot-tweet">
@@ -153,13 +153,13 @@
               </li>
               <li style="padding-left: 5px" class="text-left">
                 <h5 class="semibold-ellipsis nm">
-                  {{ reply?.firstName }} {{ reply?.lastName }}
+                  {{ reply?.user.firstName }} {{ reply?.user.lastName }}
                 </h5>
-                <p class="nm">&#64;{{ reply?.userName }}</p>
+                <p class="nm">&#64;{{ reply?.user.username }}</p>
               </li>
             </div>
             <li>
-              <p class="text-muted">{{ reply?.timestamp }}</p>
+              <p class="text-muted">{{ reply?.created }}</p>
             </li>
           </div>
           <div class="bot-reply">

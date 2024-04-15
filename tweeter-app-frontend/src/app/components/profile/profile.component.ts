@@ -12,16 +12,20 @@ export class ProfileComponent {
   userInfo: IUserInfo = {
     firstName: '',
     lastName: '',
-    userName: '',
+    username: '',
     bio: ''
   }
 
   userName: any;
 
   constructor(private dataService: DataService, private activatedRoute: ActivatedRoute) {
-    this.userName = this.activatedRoute.snapshot.paramMap.get('username');
+    this.userName = localStorage.getItem('userName');
+    console.log("Username in profile component: ", this.userName);
     this.dataService.getUserByUsername(this.userName).subscribe((response: any) => {
-      this.userInfo = response;
+      this.userInfo.firstName = response.firstName;
+      this.userInfo.lastName = response.lastName;
+      this.userInfo.username = this.userName;
+      this.userInfo.bio = "This is a bio";
     });
   }
 }

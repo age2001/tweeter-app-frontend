@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ICreatePost } from 'src/app/models/post-create.model';
-import { AuthService } from 'src/app/services/auth.service';
+import { ITag } from 'src/app/models/tag.model';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-new-tweet',
@@ -16,7 +17,9 @@ export class NewTweetComponent {
     tags: []
   }
 
-  constructor(private authService: AuthService, private router: Router) {}
+  currentTags : ITag[] = [];
+
+  constructor(private dataService: DataService, private router: Router) {}
 
   onInputHandler(event: any) {
     this.characterCount = 144 - event.target.value.length;
@@ -25,6 +28,10 @@ export class NewTweetComponent {
     if (hashTagDiv !== null) {
       if (hashTags !== null) {
         hashTagDiv.innerHTML = hashTags.join(" ");
+        this.tweet.tags = [];
+        for (let tagName of hashTags) {
+          this.tweet.tags.push({name: tagName})
+        }
       } else {
         hashTagDiv.innerHTML = "";
       }
@@ -38,9 +45,10 @@ export class NewTweetComponent {
     } else {
       return;
     }
-    this.authService.register(this.tweet).subscribe((response: any) => {
+    this.dataService.createPost(this.tweet).subscribe((response: any) => {
       console.log(response);
-      this.router.navigate(['/profile'], { queryParams: { newTweet: 'true' } });
+      // this.router.navigate(['/profile'], { queryParams: { newTweet: 'true' } });
+      location.reload();
     }, (error: any) => {
       console.log(error);
     });

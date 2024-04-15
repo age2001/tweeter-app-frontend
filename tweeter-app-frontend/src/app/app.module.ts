@@ -7,7 +7,6 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { RepliesComponent } from './components/replies/replies.component';
 import { PostsComponent } from './components/posts/posts.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -24,7 +23,6 @@ import { NewReplyComponent } from './components/new-reply/new-reply.component';
     ProfilePageComponent,
     HomePageComponent,
     NavbarComponent,
-    RepliesComponent,
     PostsComponent,
     ProfileComponent,
     NewTweetComponent,
