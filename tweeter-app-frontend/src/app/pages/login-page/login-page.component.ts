@@ -28,7 +28,7 @@ export class LoginPageComponent{
   }
 
   loginForm = this.fb.group({
-    usernameOrEmail: [null, [Validators.required, Validators.email]],
+    usernameOrEmail: [null, [Validators.required]],
     password: [null, [Validators.required, Validators.minLength(6)]]
   });
 
@@ -42,7 +42,7 @@ export class LoginPageComponent{
 
   onLoginHandler() {
     this.authService.login(this.loginForm.value).subscribe((response: any) => {
-      localStorage.setItem('token', response.response);
+      localStorage.setItem('token', response.token);
       localStorage.setItem('userName', response.userName);
       this.router.navigate(['/home'], { queryParams: { loggedIn: 'true' }});
     }, (error: any) => {
