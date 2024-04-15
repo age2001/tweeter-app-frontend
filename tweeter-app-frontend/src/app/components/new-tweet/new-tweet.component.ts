@@ -1,5 +1,4 @@
-import { Component, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { ICreatePost } from 'src/app/models/post-create.model';
 import { ITag } from 'src/app/models/tag.model';
 import { DataService } from 'src/app/services/data.service';

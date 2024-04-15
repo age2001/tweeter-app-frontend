@@ -38,7 +38,7 @@ export class PostsComponent {
               private authService: AuthService,
               private sharedService: SharedService) {
     
-    sharedService.onMainEvent.subscribe(() => {
+    this.sharedService.onMainEvent.subscribe(() => {
       this.updatePosts();
     })
 
