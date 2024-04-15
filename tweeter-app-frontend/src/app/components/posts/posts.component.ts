@@ -3,9 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IPostInfo } from 'src/app/models/post-info.model';
 import { DataService } from 'src/app/services/data.service';
 
-import * as usersData from './users.json'
+// import * as usersData from './users.json'
 import { ICreateReply } from 'src/app/models/reply-create.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { ITag } from 'src/app/models/tag.model';
 
 @Component({
   selector: 'app-posts',
@@ -17,10 +18,9 @@ export class PostsComponent {
 
   pageName: any;
   username: any;
-  // posts: IPostInfo[] = [];
+  posts: IPostInfo[];
 
   modalPost: any
-  posts: any = JSON.parse(JSON.stringify(usersData)).users;
 
   characterCount: number = 144;
   reply: ICreateReply = {
@@ -33,27 +33,22 @@ export class PostsComponent {
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
     this.pageName = this.elementRef.nativeElement.getAttribute('pageName');
 
-    var hashTagDiv = document.querySelector(".hashtags");
-    if (hashTagDiv !== null) {
-      console.log("NOT NULL")
-      hashTagDiv.innerHTML = this.posts.tags.join(" ");
-    }
-
+    this.posts = []
     // If on Home page posts feed then get all posts
     // Else if on the users profile page, get posts by the users stored username
     if (this.pageName === 'allPosts') {
       this.className = 'container wrapper'
-      // this.dataService.getPosts().subscribe((response: any) => {
-      //   console.log(response);
-      //   this.posts = response;
-      // });
+      this.dataService.getPosts().subscribe((response: any) => {
+        console.log(response);
+        this.posts = response;
+      });
     } else if (this.pageName === 'profilePosts') {
       this.className = 'container wrapper profile-posts-vh'
-      // this.dataService.getPostsByUsername(this.username).subscribe((response: any) => {
-      //   console.log(response);
-      //   this.posts = response;
-      // });
-    }
+      this.dataService.getPostsByUsername(this.username).subscribe((response: any) => {
+          console.log(response);
+          this.posts = response;
+        });
+      }
   }
   
   onInputHandler(event: any) {
@@ -89,12 +84,18 @@ export class PostsComponent {
     this.router.navigate(['/post', id]);
   }
   
-  returnTag(tag: Array<string>) {
+  returnTag(tag: ITag[] | undefined) {
     if (tag === undefined) {
       return "";
     }
+    
+    let final_string = "";
 
-    return tag.map(i => '#' + i).join(" ");
+    // return tag.map(i => '#' + i).join(" ");
+    for (let i = 0; i < tag.length; i++) {
+      final_string += '#' + tag[i].name + ' ';
+    }
+    return final_string;
   }
   
   checkRepliesQuantity(replies: any) {
