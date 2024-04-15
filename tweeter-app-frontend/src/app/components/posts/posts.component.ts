@@ -51,7 +51,6 @@ export class PostsComponent {
       this.className = 'container wrapper profile-posts-vh'
       this.dataService.getPostsByUsername(this.username).subscribe((response: any) => {
           this.posts = response;
-
           for (let post of this.posts) {
             this.getRepliesFromPost(post)
             this.getTagsFromPost(post)
@@ -89,7 +88,8 @@ export class PostsComponent {
     this.dataService.createReply(this.reply).subscribe((response: any) => {
       console.log(response);
       // this.router.navigate(['/profile'], { queryParams: { newReply: 'true' } });
-      location.reload();
+      // location.reload();
+      
     }, (error: any) => {
       console.log(error);
     });
@@ -136,6 +136,11 @@ export class PostsComponent {
   getRepliesFromPost(post: any) {
     this.dataService.getRepliesByPostId(post.id).subscribe((response: any) => {
       post.replies = response;
+      for (let reply of post.replies) {
+        this.dataService.getTagsByReplyId(reply.id).subscribe((response2: any) => {
+          reply.replyTags = response2;
+        });
+      }
   });
 }
 

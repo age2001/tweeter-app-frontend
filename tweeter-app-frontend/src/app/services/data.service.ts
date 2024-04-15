@@ -35,6 +35,10 @@ export class DataService {
     return this.http.get(`${this.BASE_URL}/tag/${postId}`);
   }
 
+  getTagsByReplyId(replyId: any) {
+    return this.http.get(`${this.BASE_URL}/tag/reply/${replyId}`);
+  }
+
   createPost(tweet: ICreatePost) {
     return this.http.post(`${this.BASE_URL}/post`, tweet);
   }

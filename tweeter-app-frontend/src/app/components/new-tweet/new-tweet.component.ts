@@ -48,7 +48,7 @@ export class NewTweetComponent {
     this.dataService.createPost(this.tweet).subscribe((response: any) => {
       console.log(response);
       // this.router.navigate(['/profile'], { queryParams: { newTweet: 'true' } });
-      location.reload();
+      // location.reload();
     }, (error: any) => {
       console.log(error);
     });
