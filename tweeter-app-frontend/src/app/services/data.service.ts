@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class DataService {
-  private BASE_URL = 'http://localhost:9000/api/v1.0/tweets';
+  private BASE_URL = 'http://localhost:9000/api/v1.0/';
 
   constructor(private http: HttpClient) { }
 
@@ -18,7 +18,10 @@ export class DataService {
   }
   
   getPostsByUsername(username: any) {
-    return this.http.get(`${this.BASE_URL}/${username}`);
+    return this.http.get(`${this.BASE_URL}/posts/${username}`);
   }
 
+  getUserByUsername(username: any) {
+    return this.http.get(`${this.BASE_URL}/users/${username}`)
+  }
 }

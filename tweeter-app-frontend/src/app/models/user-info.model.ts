@@ -3,5 +3,5 @@ export interface IUserInfo {
     firstName: string;
     lastName: string;
     userName: string;
-    bio: string;
+    bio?: string;
 }
