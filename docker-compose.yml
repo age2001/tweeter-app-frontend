@@ -1,0 +1,127 @@
+version: "3.7"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+      - tweeter-app-mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+
+  tweeter-app-frontend:
+    image: tweeter-app-frontend
+    container_name: tweeter-app-frontend
+    build:
+      context: ./tweeter-app-frontend/tweeter-app-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+
+  service-registry:
+    image: service-registry
+    container_name: service-registry
+    build:
+      context: ./tweeter-app-microservice/service-registry
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+
+  config-server:
+    image: config-server
+    container_name: config-server
+    build:
+      context: ./tweeter-app-microservice/config-server
+      dockerfile: Dockerfile
+    ports:
+      - "9250:9250"
+    environment:
+      SPRING_APPLICATION_JSON: '{"eureka":{"client":{"serviceUrl":{"defaultZone":"http://service-registry:8761/eureka"}}}}'
+    depends_on:
+      - service-registry
+  
+  cloud-gateway:
+    image: cloud-gateway
+    container_name: cloud-gateway
+    build:
+      context: ./tweeter-app-microservice/cloud-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    depends_on:
+      - config-server
+      - service-registry
+    environment:
+      SPRING_APPLICATION_JSON: '{"eureka":{"client":{"serviceUrl":{"defaultZone":"http://service-registry:8761/eureka"}}}}'
+
+  auth-service:
+    image: auth-service
+    container_name: auth-service
+    volumes:
+      - tweeter-app-mysql-data:/var/lib/mysql
+    build:
+      context: ./tweeter-app-microservice/auth-service
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: tweeteruserdb
+      spring.datasource.url: jdbc:mysql://mysql:3306/tweeteruserdb
+      SPRING_APPLICATION_JSON: '{"eureka":{"client":{"serviceUrl":{"defaultZone":"http://service-registry:8761/eureka"}}}}'
+    depends_on:
+      - mysql
+      - config-server
+      - service-registry
+  
+  post-service:
+    image: post-service
+    container_name: post-service
+    volumes:
+      - tweeter-app-mysql-data:/var/lib/mysql
+    build:
+      context: ./tweeter-app-microservice/post-service
+      dockerfile: Dockerfile
+    ports:
+      - "9001:9001"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: tweeterpostdb
+      spring.datasource.url: jdbc:mysql://mysql:3306/tweeterpostdb
+      SPRING_APPLICATION_JSON: '{"eureka":{"client":{"serviceUrl":{"defaultZone":"http://service-registry:8761/eureka"}}}}'
+    depends_on:
+      - mysql
+      - config-server
+      - service-registry
+  
+  reply-service:
+    container_name: reply-service
+    volumes:
+      - tweeter-app-mysql-data:/var/lib/mysql
+    build:
+      context: ./tweeter-app-microservice/reply-service
+      dockerfile: Dockerfile
+    image: reply-service
+    ports:
+      - "9002:9002"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: tweeterreplydb
+      spring.datasource.url: jdbc:mysql://mysql:3306/tweeterreplydb
+      SPRING_APPLICATION_JSON: '{"eureka":{"client":{"serviceUrl":{"defaultZone":"http://service-registry:8761/eureka"}}}}'
+    depends_on:
+      - mysql
+      - config-server
+      - service-registry
+  
+volumes:
+  tweeter-app-mysql-data:
