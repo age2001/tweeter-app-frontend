@@ -14,13 +14,13 @@
         </li>
         <li style="padding-left: 5px" class="text-left">
           <h5 class="semibold-ellipsis nm">
-            {{ post.user.firstName }} {{ post.user.lastName }}
+            {{ post.firstName }} {{ post.lastName }}
           </h5>
-          <p class="nm">&#64;{{ post.user.username }}</p>
+          <p class="nm">&#64;{{ post.userName }}</p>
         </li>
       </div>
       <li>
-        <p class="text-muted">{{ post.created }}</p>
+        <p class="text-muted">{{ post.timestamp }}</p>
       </li>
     </div>
 
@@ -91,9 +91,9 @@
             </li>
             <li style="padding-left: 5px" class="text-left">
               <h5 class="semibold-ellipsis nm">
-                {{ modalPost?.user.firstName }} {{ modalPost?.user.lastName }}
+                {{ modalPost?.firstName }} {{ modalPost?.lastName }}
               </h5>
-              <p class="nm">&#64;{{ modalPost?.user.username }}</p>
+              <p class="nm">&#64;{{ modalPost?.userName }}</p>
             </li>
           </div>
           <li>
@@ -153,9 +153,9 @@
               </li>
               <li style="padding-left: 5px" class="text-left">
                 <h5 class="semibold-ellipsis nm">
-                  {{ reply?.user.firstName }} {{ reply?.user.lastName }}
+                  {{ reply?.firstName }} {{ reply?.lastName }}
                 </h5>
-                <p class="nm">&#64;{{ reply?.user.username }}</p>
+                <p class="nm">&#64;{{ reply?.userName }}</p>
               </li>
             </div>
             <li>
@@ -166,8 +166,8 @@
             <p>
               {{ reply?.content }}
             </p>
-            <p class="tags" *ngIf="reply?.replyTags">
-              {{ returnTag(reply?.replyTags) }}
+            <p class="tags" *ngIf="reply?.tags">
+              {{ returnTag(reply?.tags) }}
             </p>
           </div>
         </div>

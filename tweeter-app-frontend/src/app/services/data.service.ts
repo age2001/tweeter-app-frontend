@@ -8,27 +8,30 @@ import { ICreateReply } from '../models/reply-create.model';
 })
 export class DataService {
   private BASE_URL = 'http://localhost:9000/api/v1.0';
+  private AUTH_SERVICE_BASE_URL = 'http://localhost:9000/api/v1.0';
+  private POST_SERVICE_BASE_URL = 'http://localhost:9001/api/v1.0';
+  private REPLY_SERVICE_BASE_URL = 'http://localhost:9002/api/v1.0';
 
   constructor(private http: HttpClient) { }
 
   getPosts() {
-    return this.http.get(`${this.BASE_URL}/post`);
+    return this.http.get(`${this.POST_SERVICE_BASE_URL}/post`);
   }
 
   getUsers() {
-    return this.http.get(`${this.BASE_URL}/users/all`);
+    return this.http.get(`${this.AUTH_SERVICE_BASE_URL}/users/all`);
   }
   
   getPostsByUsername(username: any) {
-    return this.http.get(`${this.BASE_URL}/post/${username}`);
+    return this.http.get(`${this.POST_SERVICE_BASE_URL}/post/${username}`);
   }
 
   getUserByUsername(username: any) {
-    return this.http.get(`${this.BASE_URL}/auth/${username}`)
+    return this.http.get(`${this.AUTH_SERVICE_BASE_URL}/auth/${username}`)
   }
 
   getRepliesByPostId(postId: any) {
-    return this.http.get(`${this.BASE_URL}/reply/${postId}`);
+    return this.http.get(`${this.REPLY_SERVICE_BASE_URL}/reply/${postId}`);
   }
 
   getTagsByPostId(postId: any) {
@@ -40,10 +43,10 @@ export class DataService {
   }
 
   createPost(tweet: ICreatePost) {
-    return this.http.post(`${this.BASE_URL}/post`, tweet);
+    return this.http.post(`${this.POST_SERVICE_BASE_URL}/post`, tweet);
   }
 
   createReply(reply: ICreateReply) {
-    return this.http.post(`${this.BASE_URL}/reply`, reply);
+    return this.http.post(`${this.REPLY_SERVICE_BASE_URL}/reply`, reply);
   }
 }

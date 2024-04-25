@@ -52,20 +52,17 @@ export class PostsComponent {
       this.className = 'container wrapper'
       this.dataService.getPosts().subscribe((response: any) => {
         this.posts = response;
-
         for (let post of this.posts) {
           this.getRepliesFromPost(post)
-          this.getTagsFromPost(post)
         }
       });
     } else if (this.pageName === 'profilePosts') {
       this.className = 'container wrapper profile-posts-vh'
       this.dataService.getPostsByUsername(this.username).subscribe((response: any) => {
-          this.posts = response;
-          for (let post of this.posts) {
-            this.getRepliesFromPost(post)
-            this.getTagsFromPost(post)
-          }
+        this.posts = response;
+        for (let post of this.posts) {
+          this.getRepliesFromPost(post)
+        }
         });
       }
 
@@ -80,7 +77,7 @@ export class PostsComponent {
         hashTagDiv.innerHTML = hashTags.join(" ");
         this.reply.tags = [];
         for (let tagName of hashTags) {
-          this.reply.tags.push({name: tagName})
+          this.reply.tags.push(tagName)
         }
       } else {
         hashTagDiv.innerHTML = "";
@@ -95,11 +92,8 @@ export class PostsComponent {
     } else {
       return;
     }
-    this.reply.postId = this.modalPost.id;
+    this.reply.postId = this.modalPost.postId;
     this.dataService.createReply(this.reply).subscribe((response: any) => {
-      console.log(response);
-      // this.router.navigate(['/profile'], { queryParams: { newReply: 'true' } });
-      // location.reload();
       this.updateReplies(post);
     }, (error: any) => {
       console.log(error);
@@ -110,19 +104,12 @@ export class PostsComponent {
     this.router.navigate(['/post', id]);
   }
   
-  returnTag(tag: ITag[] | undefined) {
+  returnTag(tag: string[] | undefined) {
     if (tag === undefined) {
       return "";
     }
     
-    // return tag.map(i => '#' + i).join(" ");
-
-    let final_string = "";
-    for (let i of tag) {
-      final_string += i.name + " ";
-    }
-
-    return final_string;
+    return tag.join(" ");
   }
   
   checkRepliesQuantity(replies: any) {
@@ -145,30 +132,18 @@ export class PostsComponent {
   }
 
   getRepliesFromPost(post: any) {
-    this.dataService.getRepliesByPostId(post.id).subscribe((response: any) => {
-      post.replies = response;
-      for (let reply of post.replies) {
-        this.dataService.getTagsByReplyId(reply.id).subscribe((response2: any) => {
-          reply.replyTags = response2;
-        });
+    this.dataService.getRepliesByPostId(post.postId).subscribe((response: any) => {
+      if (response.id === null) {
+        return;
       }
+
+      post.replies = response;
   });
 }
 
-  getTagsFromPost(post: any) {
-    this.dataService.getTagsByPostId(post.id).subscribe((response: any) => {
-      post.tags = response;
-    });
-  }
-
   updateReplies(post: any) {
-    this.dataService.getRepliesByPostId(post.id).subscribe((response: any) => {
+    this.dataService.getRepliesByPostId(post.postId).subscribe((response: any) => {
       post.replies = response;
-      for (let reply of post.replies) {
-        this.dataService.getTagsByReplyId(reply.id).subscribe((response2: any) => {
-          reply.replyTags = response2;
-        });
-      }
     });
     this.reply.content = "";
     this.characterCount = 144;
@@ -179,14 +154,10 @@ export class PostsComponent {
   }
 
   updatePosts() {
-    console.log("Updating posts")
-    console.log("current posts: ")
-    console.log(this.posts)
     this.dataService.getPostsByUsername(this.username).subscribe((response: any) => {
       this.posts = response;
       for (let post of this.posts) {
         this.getRepliesFromPost(post)
-        this.getTagsFromPost(post)
       }
     });
   }

@@ -31,7 +31,7 @@ export class NewTweetComponent {
         hashTagDiv.innerHTML = hashTags.join(" ");
         this.tweet.tags = [];
         for (let tagName of hashTags) {
-          this.tweet.tags.push({name: tagName})
+          this.tweet.tags.push(tagName)
         }
       } else {
         hashTagDiv.innerHTML = "";
@@ -47,9 +47,6 @@ export class NewTweetComponent {
       return;
     }
     this.dataService.createPost(this.tweet).subscribe((response: any) => {
-      console.log(response);
-      // this.router.navigate(['/profile'], { queryParams: { newTweet: 'true' } });
-      // location.reload();
       this.sharedService.onMainEvent.emit();
     }, (error: any) => {
       console.log(error);
